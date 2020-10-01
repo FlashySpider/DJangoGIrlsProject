@@ -1,0 +1,88 @@
+
+#include<stdio.h>
+#include<stdbool.h>
+#include<stdlib.h>
+#include<limits.h>
+#include<string.h>
+
+//------------STACK-------------
+typedef struct stack{
+    char * data;
+    int top;
+    int capacity;
+} Stack;
+
+bool isEmpty(Stack *s){
+    if(s->top == -1){
+        return true;
+    } else{
+        return false;
+    }
+}
+
+bool isFull(Stack *s){
+    if(s->top == s->capacity - 1){
+        return true;
+    } else{
+        return false;
+    }
+}
+
+bool push(Stack *s, char data){
+    if(!isFull(s)){
+        s->top += 1;
+        s->data[s->top] = data;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+char pop(Stack *s){
+    if(!isEmpty(s)){
+        return s->data[s->top--];
+    }
+}
+
+Stack * stack_init(int ofSize){
+    if(ofSize <= 0){
+        return NULL;
+    }
+
+    Stack *s = (Stack *)malloc(sizeof(Stack));
+    if(!s){
+        return NULL;
+    }
+
+    s->top = -1;
+    s->capacity = ofSize;
+
+    s->data = (char *)malloc(ofSize * sizeof(char));
+    if(!s->data){
+        return NULL;
+    }
+
+    return s;
+}
+
+//---------------------------------
+
+int precedence(char c){
+    switch(c){
+        case '+' : return 1;
+        case '-' : return 2;
+        case '*' : return 3;
+        case '/' : return 4;
+        case '^' : return 5;
+    }
+    return INT_MIN;
+}
+
+bool isOperator(char c){
+    if(c == '+' || c == '-' || c == '*' || c == '/' || c == '^'){
+        return true;
+    }
+    else {
+        return false;
+    }
+}
